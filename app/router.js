@@ -32,9 +32,15 @@ module.exports = (app) => {
     `${prefix}/image-cards-detail`,
     controller.imageCard.getImageCardDetailById
   )
+  // 7. 获取所有image信息(通过关联查询方式)
   router.get(
     `${prefix}/image-cards-detail-all`,
     controller.imageCard.getImageCardDetail
+  )
+  // 8. 删除某个card信息
+  router.delete(
+    `${prefix}/image-cards-by-id`,
+    controller.imageCard.deleteImageCardById
   )
   // ========================= 4. Tab管理(菜单下的Tab) =========================
   router.post(`${prefix}/tab`, controller.tab.createTab)

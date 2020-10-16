@@ -23,6 +23,16 @@ class ImageCardsService extends Service {
     return r
   }
 
+  // 根据明细表id反查主表的id
+  async getImageCardIdByDetailId(id) {
+    const r = await this.app.mysql.select('menu_card_document_item', {
+      where: {
+        id,
+      },
+    })
+    return r
+  }
+
   async getImageCardDetail() {
     const r = await this.app.mysql.query(`
       SELECT  b.id,
@@ -107,6 +117,24 @@ class ImageCardsService extends Service {
       return {
         code: -1,
         msg: '创建内容失败',
+      }
+    }
+  }
+
+  async deleteImageCardById(id) {
+    let detail = await this.getImageCardIdByDetailId(id)
+    // 删除明细数据
+    let res1 = await this.app.mysql.delete('menu_card_document_item', {
+      id,
+    })
+    // 删除主体数据
+    let res2 = await this.app.mysql.delete('menu_card_document', {
+      id: detail[0].parent_id,
+    })
+
+    if (res1.affectedRows === 1 && res2.affectedRows === 1) {
+      return {
+        code: 0,
       }
     }
   }

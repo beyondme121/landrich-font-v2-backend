@@ -46,6 +46,24 @@ class ImageCardController extends Controller {
       ctx.body = r
     }
   }
+
+  // 删除card by id
+  async deleteImageCardById() {
+    const { ctx, service } = this
+    let { id } = ctx.request.body
+    let r = await service.imageCards.deleteImageCardById(id)
+    if (r.code === 0) {
+      ctx.body = {
+        code: 0,
+        msg: '删除成功',
+      }
+    } else {
+      ctx.body = {
+        code: -1,
+        msg: '删除失败',
+      }
+    }
+  }
 }
 
 module.exports = ImageCardController
