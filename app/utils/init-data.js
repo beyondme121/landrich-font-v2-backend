@@ -20,7 +20,6 @@ Object.keys(config).forEach((key) => {
       let { title, imgURLS } = _item
       let parent_id = id
       let _id = uuid()
-      // console.log('++++', parent_id, _id, title, imgURLS.join(','))
       let sql = `
         insert into menu_card_document_item(parent_id, id, title, imgURLS, create_time)
         values('${parent_id}','${_id}','${title}','${imgURLS.join(
@@ -31,4 +30,3 @@ Object.keys(config).forEach((key) => {
     })
   })
 })
-console.log('done')

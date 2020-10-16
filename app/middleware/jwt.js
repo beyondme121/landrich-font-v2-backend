@@ -20,7 +20,6 @@ module.exports = (options) => {
       let decode
       try {
         decode = jwt.verify(token, options.secret)
-        console.log('decode', decode)
         if (!decode || !decode.id) {
           ctx.throw(401, '没有权限，请登录')
         }

@@ -57,9 +57,7 @@ class UserService extends Service {
   // 3. 登录
   async login({ email, password }) {
     const { service } = this
-    console.log('email, password', email, password)
     const userInfo = await this.findUserByEmail(email)
-    console.log('userInfo', userInfo)
     if (userInfo.code === -1) {
       return {
         code: -2,
