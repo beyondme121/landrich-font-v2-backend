@@ -25,6 +25,9 @@ module.exports = (app) => {
   // ========================= 3. 内容管理(图片Card, 图片资源请求(包含主信息和明细图片信息)) =========================
   // 4. 创建某个一项预报产品
   router.post(`${prefix}/image-cards`, controller.imageCard.createCard)
+  // 5. 根据id更新card信息
+  router.put(`${prefix}/image-cards`, controller.imageCard.updateCard)
+
   // 5. 获取所有一级菜单下的明细card数据
   router.get(`${prefix}/image-cards`, controller.imageCard.getImageCards)
   // 6. 获取某个card里面的detail配置,包括card中图片数组

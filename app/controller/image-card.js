@@ -64,6 +64,25 @@ class ImageCardController extends Controller {
       }
     }
   }
+
+  async updateCard() {
+    const { ctx, service } = this
+    let { id, card } = ctx.request.body
+    if (id) {
+      let res = await service.imageCards.updateImageCardById(id, card)
+      if (res.code === 0) {
+        ctx.body = {
+          code: 0,
+          data: card,
+        }
+      } else {
+        ctx.body = {
+          code: -1,
+          msg: '更新失败',
+        }
+      }
+    }
+  }
 }
 
 module.exports = ImageCardController

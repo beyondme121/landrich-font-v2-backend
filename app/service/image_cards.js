@@ -61,7 +61,7 @@ class ImageCardsService extends Service {
       type,
       class_type,
       homepage_type,
-      sortKey, // 主体内容的排序
+      sort_key, // 主体内容的排序
       detail_title, // 明细信息的标题
       imgURLS, // 明细信息的图片集合
     } = card
@@ -69,6 +69,7 @@ class ImageCardsService extends Service {
     let document_id = this.ctx.helper.uuid()
     // 新增的card都使用uuid作为url, 目前前端没有使用这个path
     let path = '/' + class_type.toLowerCase() + '/' + document_id
+    // let path = '/' + class_type.toLowerCase() + '/' + coverImg
     let create_time = this.ctx.helper.getTime()
 
     // 创建内容主题
@@ -81,7 +82,7 @@ class ImageCardsService extends Service {
       class_type,
       create_time,
       homepage_type,
-      sort_key: sortKey,
+      sort_key,
     })
 
     let detail_id = this.ctx.helper.uuid()
@@ -110,7 +111,7 @@ class ImageCardsService extends Service {
           homepage_type,
           detail_title,
           imgURLS,
-          sortKey,
+          sort_key,
         },
       }
     } else {
@@ -135,6 +136,56 @@ class ImageCardsService extends Service {
     if (res1.affectedRows === 1 && res2.affectedRows === 1) {
       return {
         code: 0,
+      }
+    }
+  }
+
+  async updateImageCardById(id, card) {
+    let { app } = this
+    console.log('id, card', id, card)
+    let detail = await this.getImageCardIdByDetailId(id)
+
+    let {
+      title,
+      coverImg,
+      type,
+      class_type,
+      create_time,
+      homepage_type,
+      detail_title,
+      imgURLS,
+      sort_key, // 主体card的排序字段
+    } = card
+    // 更新明细
+    const updateItemRow = {
+      id: id,
+      title: detail_title,
+      imgURLS,
+    }
+    let res1 = await app.mysql.update('menu_card_document_item', updateItemRow)
+    console.log('detail, ', detail)
+    // 更新主体
+    let updateDocumentRow = {
+      id: detail[0].parent_id,
+      title,
+      coverImg,
+      type,
+      class_type,
+      create_time,
+      homepage_type,
+      sort_key,
+    }
+    let res2 = await app.mysql.update('menu_card_document', updateDocumentRow)
+
+    console.log('------', res1, res2)
+
+    if (res1.affectedRows === 1 && res2.affectedRows === 1) {
+      return {
+        code: 0,
+      }
+    } else {
+      return {
+        code: -1,
       }
     }
   }
