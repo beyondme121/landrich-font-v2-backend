@@ -142,7 +142,6 @@ class ImageCardsService extends Service {
 
   async updateImageCardById(id, card) {
     let { app } = this
-    console.log('id, card', id, card)
     let detail = await this.getImageCardIdByDetailId(id)
 
     let {
@@ -163,7 +162,6 @@ class ImageCardsService extends Service {
       imgURLS,
     }
     let res1 = await app.mysql.update('menu_card_document_item', updateItemRow)
-    console.log('detail, ', detail)
     // 更新主体
     let updateDocumentRow = {
       id: detail[0].parent_id,
@@ -176,8 +174,6 @@ class ImageCardsService extends Service {
       sort_key,
     }
     let res2 = await app.mysql.update('menu_card_document', updateDocumentRow)
-
-    console.log('------', res1, res2)
 
     if (res1.affectedRows === 1 && res2.affectedRows === 1) {
       return {
